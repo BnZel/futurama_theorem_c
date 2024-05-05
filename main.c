@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdbool.h>
 #include <stdlib.h>
 #include <time.h>
 
@@ -11,13 +10,50 @@ struct Person
 };
 
 
+void swap(struct Person *p1, struct Person *p2)
+{
+    printf("\n\033[0;36mSWITCHING MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", p1->mind, p1->body, p2->mind, p2->body);
+
+    int tempMind;
+    tempMind = p1->mind;
+    p1->mind = p2->mind;
+    p2->mind = tempMind;
+
+    printf("\n\033[0;31mSWITCHED MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", p1->mind, p1->body, p2->mind, p2->body);
+}
+
+
+int initialize(void)
+{   
+    int num_people;
+    int result;
+
+    printf("How many people: ");
+    result = scanf("%d", &num_people);
+    
+    if(result != 1 || (num_people <= 0 || num_people <= 2))
+    {
+        printf("Input error\n");   
+        printf("Also make sure there's enough people! Gather 3 or more to help...\n"); 
+        exit(1);
+    }
+
+    printf("Entered: %d\n", num_people);
+
+    return num_people;
+}
+
 // NOTE: unit test the for loop
 //       make sure first and second cycle
 //       is correctly placed in the struct
 //       look into this...
 int main(void)
 {
-    struct Person p_n[9];
+
+    int num_people;
+    num_people = initialize();
+    
+    struct Person p_n[num_people];
     int n = sizeof(p_n) / sizeof(p_n[0]);
     int firstCycle = n - 2;
     int secondCycle = n - 3;
@@ -60,31 +96,19 @@ int main(void)
         }
     }
 
-    // NOTE: maybe need to be in the same struct...
-    //       look into this later on when coding
-    //       as this could change
-
     // need two extra helpers without swaps
     // to swap main people properly
     printf("\nhelpers:\n");
-    struct Person p_helpers[2], x, y;
+    struct Person x, y;
     x.mind = n + 1;
     x.body = n + 1;
     y.mind = n + 2;
     y.body = n + 2;
-    p_helpers[0] = x; p_helpers[1] = y;
 
     printf("mind: %d | body: %d \nmind: %d | body: %d\n", x.mind, x.body, y.mind, y.body);
 
 
     printf("\n====================START====================\n\n-----------------FIRST CYCLE-----------------\n");
-
-    // NOTE: ONLY swap mind/body ONCE per mind/body
-    //       CANNOT swap same mind/body twice
-    //       relates to true/false
-
-    // TODO: put swapping operation 
-    //       into function to remove redunancy
 
     // first cycle unshuffle minds procedure:
     //      first cycle:
@@ -94,94 +118,49 @@ int main(void)
     //          (4). x: p_helper[0] swaps with starting point
     for (int index = 0; index < n; index++)
     {   
-        int *tempMind;
         if (index == 0)
         {
-            printf("\n\033[0;36mSWITCHING MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", y.mind, y.body, p_n[index].mind, p_n[index].body);
-
-            tempMind = y.mind;
-
-            y.mind = p_n[index].mind;
-            p_n[index].mind = tempMind;
-
-            printf("\n\033[0;31mSWITCHED MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", y.mind, y.body, p_n[index].mind, p_n[index].body);
+            swap(&y, &p_n[index]);
         }
         else if (index == 1)
         {
-            printf("\n\033[0;36mSWITCHING MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", x.mind, x.body, p_n[index].mind, p_n[index].body);
-
-            tempMind = x.mind;
-
-            x.mind = p_n[index].mind;
-            p_n[index].mind = tempMind;
-
-            printf("\n\033[0;31mSWITCHED MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", x.mind, x.body, p_n[index].mind, p_n[index].body);
+            swap(&x, &p_n[index]);
         }
         else
         {
             int backCounter;
             backCounter = n - index - 1;
 
-            printf("\n\033[0;36mSWITCHING MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", y.mind, y.body, p_n[backCounter].mind, p_n[backCounter].body);
-            tempMind = y.mind;
-            y.mind = p_n[backCounter].mind;
-            p_n[backCounter].mind = tempMind;
-            
-            printf("\n\033[0;31mSWITCHED MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", y.mind, y.body, p_n[backCounter].mind, p_n[backCounter].body);
+            swap(&y,&p_n[backCounter]);
 
             if(backCounter == 1)
             {   
-                printf("\n\033[0;36mSWITCHING MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", x.mind, x.body, p_n[0].mind, p_n[0].body);
-                
-                tempMind = x.mind;
-                x.mind = p_n[0].mind;
-                p_n[0].mind = tempMind;
-                printf("\n\033[0;31mSWITCHED MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", x.mind, x.body, p_n[0].mind, p_n[0].body);   
-
+                swap(&x, &p_n[0]);
                 break;
             }
         }
     }
 
-    printf("\n-----------------SECOND CYCLE-----------------\n");
+    printf("\n\033[0m-----------------SECOND CYCLE-----------------\n");
 
     // second cycle unshuffle minds procedure:
     //      (1). y: p_helper[1] swaps with 7
     //      (2). x: p_helper[0] swaps with 8
     //      (3). y: p_helper[1] swaps with 8
     //      (4). x: p_helper[0] swaps with 7
-    int secondLast, last, *tempY, *tempX;
+    int secondLast, last;
     secondLast = n-2;
     last = n-1;
 
-    printf("\033[0;37mSECOND LAST INDEX: %d\nLAST INDEX: %d\n", secondLast, last);
+    swap(&y, &p_n[secondLast]);
 
-    printf("\n\033[0;36mSWITCHING MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", y.mind, y.body, p_n[secondLast].mind, p_n[secondLast].body);   
-    tempY = y.mind;
-    y.mind = p_n[secondLast].mind;
-    p_n[secondLast].mind = tempY;
-    printf("\n\033[0;31mSWITCHED MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", y.mind, y.body, p_n[secondLast].mind, p_n[secondLast].body);   
+    swap(&x, &p_n[last]);
 
+    swap(&y, &p_n[last]);
 
-    printf("\n\033[0;36mSWITCHING MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", x.mind, x.body, p_n[last].mind, p_n[last].body);   
-    tempX = x.mind;
-    x.mind = p_n[last].mind;
-    p_n[last].mind = tempX;
-    printf("\n\033[0;31mSWITCHED MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", x.mind, x.body, p_n[last].mind, p_n[last].body);   
+    swap(&x, &p_n[secondLast]);
 
-    printf("\n\033[0;36mSWITCHING MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", y.mind, y.body, p_n[last].mind, p_n[last].body);   
-    tempY = y.mind;
-    y.mind = p_n[last].mind;
-    p_n[last].mind = tempY;
-    printf("\n\033[0;31mSWITCHED MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", y.mind, y.body, p_n[last].mind, p_n[last].body);   
-    
-    printf("\n\033[0;36mSWITCHING MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", x.mind, x.body, p_n[secondLast].mind, p_n[secondLast].body);   
-    tempX = x.mind;
-    x.mind = p_n[secondLast].mind;
-    p_n[secondLast].mind = tempX;
-    printf("\n\033[0;31mSWITCHED MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", x.mind, x.body, p_n[secondLast].mind, p_n[secondLast].body);   
- 
-    printf("\n====================END====================\n");
+    printf("\n\033[0m====================END====================\n");
 
     printf("\n\033[0m-----OUTPUT-----\n");
     for(int l=0; l<n; l++)
