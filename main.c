@@ -8,7 +8,6 @@ struct Person
 {
     int mind;
     int body;
-    bool switched;
 };
 
 
@@ -105,9 +104,6 @@ int main(void)
             y.mind = p_n[index].mind;
             p_n[index].mind = tempMind;
 
-            y.switched = true;
-            p_n[index].switched = true;
-
             printf("\n\033[0;31mSWITCHED MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", y.mind, y.body, p_n[index].mind, p_n[index].body);
         }
         else if (index == 1)
@@ -119,57 +115,30 @@ int main(void)
             x.mind = p_n[index].mind;
             p_n[index].mind = tempMind;
 
-            x.switched = true;
-            p_n[index].switched = true;
-
             printf("\n\033[0;31mSWITCHED MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", x.mind, x.body, p_n[index].mind, p_n[index].body);
         }
         else
         {
-            // TODO: this output portion shouldn't happen
-            //       x.mind should start swapping at 
-            //       backCounter=0, not y.mind
-            //       check notes...
-            //
-            // SWITCHING MIND:
-            // mind: 10 | body: 11 <---> mind: 11 | body: 1
-            //
-            // SWITCHED MIND:
-            // mind: 11 | body: 11 <---> mind: 10 | body: 1
-            //
-            // SWITCHING MIND:
-            // mind: 1 | body: 10 <---> mind: 10 | body: 1
-            //
-            // SWITCHED MIND:
-            // mind: 10 | body: 10 <---> mind: 1 | body: 1
             int backCounter;
             backCounter = n - index - 1;
 
-            if(!(y.mind == y.body) && !(p_n[backCounter].mind == p_n[backCounter].body))
-            {
-                printf("\n\033[0;36mSWITCHING MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", y.mind, y.body, p_n[backCounter].mind, p_n[backCounter].body);
+            printf("\n\033[0;36mSWITCHING MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", y.mind, y.body, p_n[backCounter].mind, p_n[backCounter].body);
+            tempMind = y.mind;
+            y.mind = p_n[backCounter].mind;
+            p_n[backCounter].mind = tempMind;
+            
+            printf("\n\033[0;31mSWITCHED MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", y.mind, y.body, p_n[backCounter].mind, p_n[backCounter].body);
 
-                tempMind = y.mind;
-                y.mind = p_n[backCounter].mind;
-                p_n[backCounter].mind = tempMind;
+            if(backCounter == 1)
+            {   
+                printf("\n\033[0;36mSWITCHING MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", x.mind, x.body, p_n[0].mind, p_n[0].body);
                 
-                p_n[backCounter].switched = true;
+                tempMind = x.mind;
+                x.mind = p_n[0].mind;
+                p_n[0].mind = tempMind;
+                printf("\n\033[0;31mSWITCHED MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", x.mind, x.body, p_n[0].mind, p_n[0].body);   
 
-                printf("\n\033[0;31mSWITCHED MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", y.mind, y.body, p_n[backCounter].mind, p_n[backCounter].body);
-
-                if(backCounter == 0)
-                {   
-                    printf("\n\033[0;36mSWITCHING MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", x.mind, x.body, p_n[backCounter].mind, p_n[backCounter].body);
-                    
-                    tempMind = x.mind;
-                    x.mind = p_n[backCounter].mind;
-
-                    p_n[backCounter].mind = tempMind;
-                    p_n[backCounter].switched = true;
-
-                    printf("\n\033[0;31mSWITCHED MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", x.mind, x.body, p_n[backCounter].mind, p_n[backCounter].body);   
-                }
-
+                break;
             }
         }
     }
@@ -191,7 +160,6 @@ int main(void)
     tempY = y.mind;
     y.mind = p_n[secondLast].mind;
     p_n[secondLast].mind = tempY;
-    p_n[secondLast].switched = true;
     printf("\n\033[0;31mSWITCHED MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", y.mind, y.body, p_n[secondLast].mind, p_n[secondLast].body);   
 
 
@@ -199,32 +167,20 @@ int main(void)
     tempX = x.mind;
     x.mind = p_n[last].mind;
     p_n[last].mind = tempX;
-    p_n[last].switched = true;
     printf("\n\033[0;31mSWITCHED MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", x.mind, x.body, p_n[last].mind, p_n[last].body);   
-
-    
-    printf("\n\033[0;36mSWITCHING MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", x.mind, x.body, p_n[secondLast].mind, p_n[secondLast].body);   
-    tempX = x.mind;
-    x.mind = p_n[secondLast].mind;
-    p_n[secondLast].mind = tempX;
-    printf("\n\033[0;31mSWITCHED MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", x.mind, x.body, p_n[secondLast].mind, p_n[secondLast].body);   
-
 
     printf("\n\033[0;36mSWITCHING MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", y.mind, y.body, p_n[last].mind, p_n[last].body);   
     tempY = y.mind;
     y.mind = p_n[last].mind;
     p_n[last].mind = tempY;
     printf("\n\033[0;31mSWITCHED MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", y.mind, y.body, p_n[last].mind, p_n[last].body);   
-
-
-    printf("\n\033[0;36mSWITCHING MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", x.mind, x.body, y.mind, y.body);   
-    tempX = x.mind; tempY = y.mind;
-
-    y.mind = tempX;
-    x.mind = tempY;
-    printf("\n\033[0;31mSWITCHED MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", x.mind, x.body, y.mind, y.body);   
-
-
+    
+    printf("\n\033[0;36mSWITCHING MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", x.mind, x.body, p_n[secondLast].mind, p_n[secondLast].body);   
+    tempX = x.mind;
+    x.mind = p_n[secondLast].mind;
+    p_n[secondLast].mind = tempX;
+    printf("\n\033[0;31mSWITCHED MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", x.mind, x.body, p_n[secondLast].mind, p_n[secondLast].body);   
+ 
     printf("\n====================END====================\n");
 
     printf("\n\033[0m-----OUTPUT-----\n");
