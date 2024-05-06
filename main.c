@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 
 
 struct Person
@@ -9,6 +8,13 @@ struct Person
     int body;
 };
 
+void print_people(struct Person *people, int num_people, int start)
+{
+    for(int i=start; i<num_people; i++)
+    {
+        printf("mind: %d | body: %d\n", people[i].mind, people[i].body);   
+    }
+}
 
 void swap(struct Person *p1, struct Person *p2)
 {
@@ -22,8 +28,133 @@ void swap(struct Person *p1, struct Person *p2)
     printf("\n\033[0;31mSWITCHED MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", p1->mind, p1->body, p2->mind, p2->body);
 }
 
+// need two extra helpers without swaps
+// to swap main people properly
+static void initialize_helpers(struct Person *x, struct Person *y, int size)
+{
+    printf("\nhelpers:\n");
 
-int initialize(void)
+    x->mind = size + 1;
+    x->body = size + 1;
+
+    y->mind = size + 2;
+    y->body = size + 2;
+
+    print_people(x, 1, 0);
+    print_people(y, 1, 0);
+}
+
+// first cycle unshuffle minds procedure:
+//          (1). y swaps with starting point
+//          (2). x swaps with second point
+//          (3). y swaps with everyone else backwards until second point
+//          (4). x swaps with starting point
+static void unshuffle_first_cycle(struct Person *helper_1, struct Person *helper_2, struct Person *people, int size)
+{
+    printf("\n\033[0m====================START====================\n\n-----------------FIRST CYCLE-----------------\n");
+
+    for (int index = 0; index < size; index++)
+    {   
+        if (index == 0)
+        {
+            swap(helper_2, &people[index]);
+        }
+        else if (index == 1)
+        {
+            swap(helper_1, &people[index]);
+        }
+        else
+        {
+            int backCounter;
+            backCounter = size - index - 1;
+
+            swap(helper_2, &people[backCounter]);
+
+            if(backCounter == 1)
+            {   
+                swap(helper_1, &people[0]);
+                break;
+            }
+        }
+    }
+}
+
+// second cycle unshuffle minds procedure:
+//      (1). y swaps with 7
+//      (2). x swaps with 8
+//      (3). y swaps with 8
+//      (4). x swaps with 7
+static void unshuffle_second_cycle(struct Person *helper_1, struct Person *helper_2, struct Person *people, int size)
+{
+    printf("\n\033[0m-----------------SECOND CYCLE-----------------\n");
+
+    int secondLast, last;
+    secondLast = size-2;
+    last = size-1;
+
+    swap(helper_2, &people[secondLast]);
+
+    swap(helper_1, &people[last]);
+
+    swap(helper_2, &people[last]);
+
+    swap(helper_1, &people[secondLast]);
+
+    printf("\n\033[0m====================END====================\n");
+}
+
+static void initialize_people(int num_people)
+{
+    printf("\n-----INPUT-----");
+
+    struct Person people[num_people];
+    int n = sizeof(people) / sizeof(people[0]);
+    int first_cycle = n-2;
+    int second_cycle = n-3;
+    
+    for(int i=0; i<first_cycle; i++)
+    {
+        people[i].mind = i;
+        people[i].body = i+1;        
+
+        if (people[i].body == first_cycle)
+        {
+            people[i].body = people[0].mind;
+        }
+
+        if (i == second_cycle)
+        {
+            int j = i + 1;
+            int k = i + 2;
+
+            people[j].body = k;
+            people[j].mind = j;
+
+            people[k].body = j;
+            people[k].mind = k;
+        }
+    }
+
+    printf("\nfirst cycle:\n");
+    print_people(people, first_cycle, 0);
+    
+    printf("\nsecond cycle:\n");
+    print_people(people, second_cycle+3, first_cycle);
+
+    struct Person x,y;
+    initialize_helpers(&x, &y, n);
+
+    unshuffle_first_cycle(&x, &y, people, n);
+    unshuffle_second_cycle(&x, &y, people, n);
+
+    printf("\n\033[0m-----OUTPUT-----\n");
+    print_people(people, n, 0);
+}
+
+// request user input
+// return number of people
+// to struct 
+void initialize(void)
 {   
     int num_people;
     int result;
@@ -40,7 +171,7 @@ int initialize(void)
 
     printf("Entered: %d\n", num_people);
 
-    return num_people;
+    initialize_people(num_people);
 }
 
 // NOTE: unit test the for loop
@@ -49,126 +180,6 @@ int initialize(void)
 //       look into this...
 int main(void)
 {
-
-    int num_people;
-    num_people = initialize();
-    
-    struct Person p_n[num_people];
-    int n = sizeof(p_n) / sizeof(p_n[0]);
-    int firstCycle = n - 2;
-    int secondCycle = n - 3;
-
-    printf("\n-----INPUT-----");
-
-    printf("\nfirst cycle:\n");
-    for (int i = 0; i < firstCycle; i++)
-    {
-        // for the first cycle
-        // form a conga line circle
-        p_n[i].mind = i;
-        p_n[i].body = i + 1;
-
-        // last body wraps around to first mind
-        if (p_n[i].body == firstCycle)
-        {
-            p_n[i].body = p_n[0].mind;
-        }
-
-        printf("mind: %d | body: %d\n", p_n[i].mind, p_n[i].body);
-
-        // second cycle
-        // for the last two
-        if (i == secondCycle)
-        {
-            printf("\nsecond cycle:\n");
-
-            int j = i + 1;
-            int k = i + 2;
-
-            p_n[j].body = k;
-            p_n[j].mind = j;
-
-            p_n[k].body = j;
-            p_n[k].mind = k;
-
-            printf("mind: %d | body: %d\n", p_n[j].mind, p_n[j].body);
-            printf("mind: %d | body: %d\n", p_n[k].mind, p_n[k].body);
-        }
-    }
-
-    // need two extra helpers without swaps
-    // to swap main people properly
-    printf("\nhelpers:\n");
-    struct Person x, y;
-    x.mind = n + 1;
-    x.body = n + 1;
-    y.mind = n + 2;
-    y.body = n + 2;
-
-    printf("mind: %d | body: %d \nmind: %d | body: %d\n", x.mind, x.body, y.mind, y.body);
-
-
-    printf("\n====================START====================\n\n-----------------FIRST CYCLE-----------------\n");
-
-    // first cycle unshuffle minds procedure:
-    //      first cycle:
-    //          (1). y: p_helper[1] swaps with starting point
-    //          (2). x: p_helper[0] swaps with second point
-    //          (3). y: p_helper[1] swaps with everyone else backwards until second point
-    //          (4). x: p_helper[0] swaps with starting point
-    for (int index = 0; index < n; index++)
-    {   
-        if (index == 0)
-        {
-            swap(&y, &p_n[index]);
-        }
-        else if (index == 1)
-        {
-            swap(&x, &p_n[index]);
-        }
-        else
-        {
-            int backCounter;
-            backCounter = n - index - 1;
-
-            swap(&y,&p_n[backCounter]);
-
-            if(backCounter == 1)
-            {   
-                swap(&x, &p_n[0]);
-                break;
-            }
-        }
-    }
-
-    printf("\n\033[0m-----------------SECOND CYCLE-----------------\n");
-
-    // second cycle unshuffle minds procedure:
-    //      (1). y: p_helper[1] swaps with 7
-    //      (2). x: p_helper[0] swaps with 8
-    //      (3). y: p_helper[1] swaps with 8
-    //      (4). x: p_helper[0] swaps with 7
-    int secondLast, last;
-    secondLast = n-2;
-    last = n-1;
-
-    swap(&y, &p_n[secondLast]);
-
-    swap(&x, &p_n[last]);
-
-    swap(&y, &p_n[last]);
-
-    swap(&x, &p_n[secondLast]);
-
-    printf("\n\033[0m====================END====================\n");
-
-    printf("\n\033[0m-----OUTPUT-----\n");
-    for(int l=0; l<n; l++)
-    {
-        printf("mind: %d | body: %d\n", p_n[l].mind, p_n[l].body);
-    }
-
-    printf("\nx.mind: %d | x.body: %d\ny.mind: %d | y.body: %d\n", x.mind, x.body, y.mind, y.body);
-
+    initialize();
     return 0;
 }
