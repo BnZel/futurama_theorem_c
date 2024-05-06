@@ -1,12 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 
-
-struct Person
-{
-    int mind;
-    int body;
-};
+#include "mindswap.h"
 
 void print_people(struct Person *people, int num_people, int start)
 {
@@ -20,10 +16,10 @@ void swap(struct Person *p1, struct Person *p2)
 {
     printf("\n\033[0;36mSWITCHING MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", p1->mind, p1->body, p2->mind, p2->body);
 
-    int tempMind;
-    tempMind = p1->mind;
+    int temp_mind;
+    temp_mind = p1->mind;
     p1->mind = p2->mind;
-    p2->mind = tempMind;
+    p2->mind = temp_mind;
 
     printf("\n\033[0;31mSWITCHED MIND:\nmind: %d | body: %d <---> mind: %d | body: %d\n\n", p1->mind, p1->body, p2->mind, p2->body);
 }
@@ -65,12 +61,12 @@ static void unshuffle_first_cycle(struct Person *helper_1, struct Person *helper
         }
         else
         {
-            int backCounter;
-            backCounter = size - index - 1;
+            int back_counter;
+            back_counter = size - index - 1;
 
-            swap(helper_2, &people[backCounter]);
+            swap(helper_2, &people[back_counter]);
 
-            if(backCounter == 1)
+            if(back_counter == 1)
             {   
                 swap(helper_1, &people[0]);
                 break;
@@ -88,21 +84,26 @@ static void unshuffle_second_cycle(struct Person *helper_1, struct Person *helpe
 {
     printf("\n\033[0m-----------------SECOND CYCLE-----------------\n");
 
-    int secondLast, last;
-    secondLast = size-2;
+    int second_last, last;
+    second_last = size-2;
     last = size-1;
 
-    swap(helper_2, &people[secondLast]);
+    swap(helper_2, &people[second_last]);
 
     swap(helper_1, &people[last]);
 
     swap(helper_2, &people[last]);
 
-    swap(helper_1, &people[secondLast]);
+    swap(helper_1, &people[second_last]);
 
     printf("\n\033[0m====================END====================\n");
 }
 
+// separate into two cycles
+// each persons mind should be 
+// next to their original bodies
+// to form a conga line
+// in order to start the swapping operation
 static void initialize_people(int num_people)
 {
     printf("\n-----INPUT-----");
@@ -117,6 +118,7 @@ static void initialize_people(int num_people)
         people[i].mind = i;
         people[i].body = i+1;        
 
+        // last body wraps around to first mind
         if (people[i].body == first_cycle)
         {
             people[i].body = people[0].mind;
@@ -151,35 +153,27 @@ static void initialize_people(int num_people)
     print_people(people, n, 0);
 }
 
-// request user input
-// return number of people
-// to struct 
-void initialize(void)
+// to start swapping process
+// input handling based on true/false 
+bool initialize(int num_people)
 {   
-    int num_people;
-    int result;
-
-    printf("How many people: ");
-    result = scanf("%d", &num_people);
     
-    if(result != 1 || (num_people <= 0 || num_people <= 2))
+    if((isdigit(num_people) != 0) || (num_people <= 0 || num_people <= 2))
     {
-        printf("Input error\n");   
-        printf("Also make sure there's enough people! Gather 3 or more to help...\n"); 
-        exit(1);
+        printf("------Input error------\n");   
+        printf("Check these conditions:\n");
+        printf("    - Input is greater than 2\n");
+        printf("    - Input is numeric\n");
+        printf("    - Input is NOT negative\n");
+        printf("    - Input is NOT a decimal\n");
+
+        return false;
     }
+    else
+    {
+        printf("Entered: %d\n", num_people);
+        initialize_people(num_people);
 
-    printf("Entered: %d\n", num_people);
-
-    initialize_people(num_people);
-}
-
-// NOTE: unit test the for loop
-//       make sure first and second cycle
-//       is correctly placed in the struct
-//       look into this...
-int main(void)
-{
-    initialize();
-    return 0;
+        return true;
+    }
 }

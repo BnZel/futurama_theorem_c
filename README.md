@@ -1,16 +1,23 @@
 ## Futurama Theorem C
 
-First iteration of a full code cleanup. Branched out in case you want to refer back to the original source.
+Second iteration, this includes **unit testing**. Branched out in case you want to refer back to the original source.
 
 ## Info
-* Re-organized majority of the code on main to separate functions:
-    - ```print_people(struct Person *people, int num_people, int start)```
-    - ```swap(struct Person *p1, struct Person *p2)```
-    - ```initialize_helpers(struct Person *x, struct Person *y, int size)```
-    - ```unshuffle_first_cycle(struct Person *helper_1, struct Person *helper_2, struct Person *people, int size)```
-    - ```unshuffle_second_cycle(struct Person *helper_1, struct Person *helper_2, struct Person *people, int size)```
-    - ```initialize_people(int num_people)```
-    - ```initialize(void)```
+* Introduced [Unity Test](https://github.com/ThrowTheSwitch/Unity/tree/master)
+* Added ```mindswap.h``` file for unit testing purposes
+* Added ```<stdbool.h>``` to modify return type of **initialize(...)** in [mindswap.h](./mindswap.h)
+* Added ```<ctype.h>``` for user input handling for **initialize(...)** in [main.c](./main.c)
+* Modified:
+    - ```void initialize(void) ---> bool initialize(int num_people) ```
+        - To better accomodate the unit testing
+        - Added error message based on input
+    
+    - Directory structure
+        - [unity_test directory](./unity_test/)
+        - Notes in [resources directory](./resources/)
+    
+    - Makefile
+        - [Link to Unity files](./Makefile)
 
 ## Resources
 * [Article](https://medium.com/@mikaeldavidsson/the-futurama-theorem-103980db677b)
@@ -18,8 +25,8 @@ First iteration of a full code cleanup. Branched out in case you want to refer b
 * [Video](https://www.youtube.com/watch?v=ILmrtHlP9xY)
 
 ## Notes
-![firstpage](./first_page.jpg)
-![secondpage](./second_page.jpg)
+![firstpage](./resources/first_page.jpg)
+![secondpage](./resources/second_page.jpg)
 
 
 
