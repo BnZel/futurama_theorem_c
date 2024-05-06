@@ -1,6 +1,6 @@
 ## Futurama Theorem C
 
-Code is bare as it is just my attempt at the futurama theorem. To see what applications can be done with this theorem...
+Myy attempt at the futurama theorem. To see what applications can be done with it.
 
 ## Resources
 * [Article](https://medium.com/@mikaeldavidsson/the-futurama-theorem-103980db677b)
@@ -10,8 +10,14 @@ Code is bare as it is just my attempt at the futurama theorem. To see what appli
 ## Notes
 ![firstpage](./first_page.jpg)
 ![secondpage](./second_page.jpg)
+
 ## Output
+When running the program, it will request the user to enter the number of people in order to start (entry must be greater than 2 people). 
+
 ```
+How many people: 9
+Entered: 9
+
 -----INPUT-----
 first cycle:
 mind: 0 | body: 1
@@ -99,63 +105,45 @@ mind: 10 | body: 11 <---> mind: 2 | body: 2
 
 
 SWITCHING MIND:
-mind: 10 | body: 11 <---> mind: 11 | body: 1
+mind: 1 | body: 10 <---> mind: 11 | body: 1
 
 
 SWITCHED MIND:
-mind: 11 | body: 11 <---> mind: 10 | body: 1
-
-
-SWITCHING MIND:
-mind: 1 | body: 10 <---> mind: 10 | body: 1
-
-
-SWITCHED MIND:
-mind: 10 | body: 10 <---> mind: 1 | body: 1
+mind: 11 | body: 10 <---> mind: 1 | body: 1
 
 
 -----------------SECOND CYCLE-----------------
-SECOND LAST INDEX: 7
-LAST INDEX: 8
 
 SWITCHING MIND:
-mind: 11 | body: 11 <---> mind: 7 | body: 8
+mind: 10 | body: 11 <---> mind: 7 | body: 8
 
 
 SWITCHED MIND:
-mind: 7 | body: 11 <---> mind: 11 | body: 8
+mind: 7 | body: 11 <---> mind: 10 | body: 8
 
 
 SWITCHING MIND:
-mind: 10 | body: 10 <---> mind: 8 | body: 7
+mind: 11 | body: 10 <---> mind: 8 | body: 7
 
 
 SWITCHED MIND:
-mind: 8 | body: 10 <---> mind: 10 | body: 7
+mind: 8 | body: 10 <---> mind: 11 | body: 7
 
 
 SWITCHING MIND:
-mind: 8 | body: 10 <---> mind: 11 | body: 8
+mind: 7 | body: 11 <---> mind: 11 | body: 7
 
 
 SWITCHED MIND:
-mind: 11 | body: 10 <---> mind: 8 | body: 8
+mind: 11 | body: 11 <---> mind: 7 | body: 7
 
 
 SWITCHING MIND:
-mind: 7 | body: 11 <---> mind: 10 | body: 7
+mind: 8 | body: 10 <---> mind: 10 | body: 8
 
 
 SWITCHED MIND:
-mind: 10 | body: 11 <---> mind: 7 | body: 7
-
-
-SWITCHING MIND:
-mind: 11 | body: 10 <---> mind: 10 | body: 11
-
-
-SWITCHED MIND:
-mind: 10 | body: 10 <---> mind: 11 | body: 11
+mind: 10 | body: 10 <---> mind: 8 | body: 8
 
 
 ====================END====================
@@ -173,5 +161,6 @@ mind: 7 | body: 7
 
 x.mind: 10 | x.body: 10
 y.mind: 11 | y.body: 11
+
 
 ```
