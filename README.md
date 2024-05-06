@@ -1,6 +1,6 @@
 ## Futurama Theorem C
 
-Myy attempt at the futurama theorem. To see what applications can be done with it.
+My attempt at the futurama theorem. To see what applications can be done with it.
 
 ## Resources
 * [Article](https://medium.com/@mikaeldavidsson/the-futurama-theorem-103980db677b)
