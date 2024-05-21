@@ -1,16 +1,13 @@
 ## Futurama Theorem C
 
-First iteration of a full code cleanup. Branched out in case you want to refer back to the original source.
+First iteration of an experimental branch. Meaning code structing is not the main focus. Any feature implemented here may be brought over to more refactored code branches and restructured accordingly. 
 
 ## Info
-* Re-organized majority of the code on main to separate functions:
-    - ```print_people(struct Person *people, int num_people, int start)```
-    - ```swap(struct Person *p1, struct Person *p2)```
-    - ```initialize_helpers(struct Person *x, struct Person *y, int size)```
-    - ```unshuffle_first_cycle(struct Person *helper_1, struct Person *helper_2, struct Person *people, int size)```
-    - ```unshuffle_second_cycle(struct Person *helper_1, struct Person *helper_2, struct Person *people, int size)```
-    - ```initialize_people(int num_people)```
-    - ```initialize(void)```
+- Added header files in [./include](/include) directory.
+- Implementation files of header files in [./src](./src).
+- Introduced [awkmenu.c](./src/awkmenu.c) and [awkmenu.h](./include/awkmenu.h) to learn about the [AWK tool](https://en.wikipedia.org/wiki/AWK):
+    - Reads number of lines/words/characters in a txt file.
+- Modified [Makefile](./Makefile) to properly link/compile/debug code files.
 
 ## Resources
 * [Article](https://medium.com/@mikaeldavidsson/the-futurama-theorem-103980db677b)

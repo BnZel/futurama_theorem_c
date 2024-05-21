@@ -1,23 +1,33 @@
 CFLAGS = -g -std=c99 -Wall -Wextra -pedantic -I. -I/usr/local/include 
+LDFLAGS = -L/usr/local/lib
 
-LDFLAGS = -g -L/usr/local/include
+build: clean main
 
-build: clean
-	gcc $(CFLAGS) $(LDFLAGS) main.c -o main.o 
+main: main.o mindswap.o awkmenu.o
+	gcc $^ -o $@ $(LDFLAGS)
 
-run:
-	./main.o
+main.o: main.c
+	gcc $(CFLAGS) -c $< -o $@
 
-debug: 
-	rm -rf ./main.o
-	clang $(CFLAGS) $(LDFLAGS) main.c -o main.o 
-	echo `clear`
-	gdb --tui -ex 'set logging file ./gdb.txt' -ex 'set logging overwrite on' ./main.o
+mindswap.o: src/mindswap.c
+	gcc $(CFLAGS) -c $< -o $@
+
+awkmenu.o: src/awkmenu.c
+	gcc ${CFLAGS} -c $< -o $@
+
+run: main
+	./main
+
+debug: clean main
+	gdb --tui ./main
 
 clean:
 	echo `clear`
-	rm -rf ./main.o
+	rm -f main *.o 
+	rm -rf ./swaps
+
+_clean:
+	echo `clear`
+	rm -f main *.o 
 
 all: clean build run
-		
-	
