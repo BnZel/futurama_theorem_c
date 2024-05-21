@@ -1,6 +1,6 @@
 ## Futurama Theorem C
 
-First iteration of an experimental branch. Meaning code structing is not the main focus. Any feature implemented here may be brought over to more refactored code branches and restructured accordingly. 
+First iteration of an experimental branch. Meaning code structuring is not the main focus. Any feature implemented here may be brought over to more refactored code branches and restructured accordingly. 
 
 ## Info
 - Added header files in [./include](/include) directory.
